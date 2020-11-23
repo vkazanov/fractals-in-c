@@ -10,7 +10,7 @@
   TODO: See the link below for further examples:
   https://github.com/skeeto/sort-circle/blob/master/sort.c
 
-  TODO: colorful ppms
+  TODO: error in the line drawing algorithm?
   TODO: Error handling
   TODO: basic arg parsing
 */
@@ -79,14 +79,12 @@ int main(int argc, char *argv[])
         /* Project the Lorenz attract onto the YZ plane */
         int col = y * 2 + 320;
         int row = z * 1.5;
-        if (col < EGA_WIDTH && row < EGA_HEIGHT && col >= 0 && row >= 0)
-            pbm_dot(pbm_yz, col, row);
+        pbm_dot_safe(pbm_yz, col, row);
 
         /* Project the Lorenz attract onto the YX plane */
         col = y * 2 + 320;
         row = x * 2 + 175;
-        if (col < EGA_WIDTH && row < EGA_HEIGHT && col >= 0 && row >= 0)
-            pbm_dot(pbm_yx, col, row);
+        pbm_dot_safe(pbm_yx, col, row);
     }
 
     /* Dump results */

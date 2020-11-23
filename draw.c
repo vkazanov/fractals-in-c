@@ -57,6 +57,12 @@ void pbm_dot(pbm_t *pbm, uint32_t x, uint32_t y)
     pbm_set(pbm, x, y, 1);
 }
 
+void pbm_dot_safe(pbm_t *pbm, int x, int y)
+{
+    if (x >= 0 && y >= 0 && x < pbm->width && y < pbm->height)
+        pbm_dot(pbm, (uint32_t)x, (uint32_t)y);
+}
+
 int pbm_get(pbm_t *pbm, int x, int y)
 {
     assert(x < pbm->width);
@@ -108,4 +114,51 @@ void pbm_line(pbm_t *pbm,
 
 #undef DIFF
 #undef SIGN
+}
+
+ppm_t *ppm_create(uint32_t width, uint32_t height)
+{
+    ppm_t *ppm = calloc(1, sizeof(ppm_t));
+    assert(ppm);
+
+    *ppm = (typeof(*ppm)) {
+        .width = width,
+        .height = height,
+        .buf = calloc(width * height, sizeof(ppm_color_t))
+    };
+    assert(ppm->buf);
+
+    return ppm;
+}
+
+void ppm_destroy(ppm_t *ppm)
+{
+    free(ppm->buf);
+    free(ppm);
+}
+
+void ppm_write(ppm_t *ppm, FILE *f)
+{
+#define MAX_COLOR 255
+
+    fprintf(f, "P3\n%d %d\n%d\n", ppm->width, ppm->height, 255);
+
+    for (uint32_t y = 0; y < ppm->height; ++y) {
+        for (uint32_t x = 0; x < ppm->width; ++x) {
+            ppm_color_t color = ppm->buf[XY_TO_BYTE(x, y, ppm->width)];
+            fprintf(f, "%d %d %d\n", color.red, color.green, color.blue);
+        }
+    }
+
+    fflush(f);
+
+#undef MAX_COLOR
+}
+
+void ppm_dot(ppm_t *ppm, uint32_t x, uint32_t y, ppm_color_t color)
+{
+    assert(x < ppm->width);
+    assert(y < ppm->height);
+
+    ppm->buf[XY_TO_BYTE(x, y, ppm->width)] = color;
 }
