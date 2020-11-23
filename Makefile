@@ -6,6 +6,6 @@ all: lorenz
 lorenz: lorenz.c draw.c
 
 clean:
-	rm -vf lorenz
+	rm -vf lorenz *.pbm
 
 .PHONY: all test
