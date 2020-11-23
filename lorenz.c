@@ -6,9 +6,6 @@
 
 #include "draw.h"
 
-#define WIDTH 50
-#define HEIGHT 100
-
 /*
   TODO: See the link below for further examples:
   https://github.com/skeeto/sort-circle/blob/master/sort.c
@@ -24,7 +21,7 @@ int main(int argc, char *argv[])
     (void) argc; (void) argv;
 
     /* a monochrome buffer */
-    pbm_t *pbm = pbm_create(WIDTH, HEIGHT);
+    pbm_t *pbm = pbm_create(EGA_WIDTH, EGA_HEIGHT);
 
     /* diagonal line */
     for (uint32_t i = 0; i < 30; ++i) {
@@ -41,11 +38,11 @@ int main(int argc, char *argv[])
     pbm_line(pbm, 5, 80, 45, 60);
 
     /* frame */
-    pbm_line(pbm, 0, 0, 0, HEIGHT - 1);
-    pbm_line(pbm, WIDTH - 1, 0, WIDTH - 1, HEIGHT - 1);
+    pbm_line(pbm, 0, 0, 0, EGA_HEIGHT - 1);
+    pbm_line(pbm, EGA_WIDTH - 1, 0, EGA_WIDTH - 1, EGA_HEIGHT - 1);
 
-    pbm_line(pbm, 0, 0, WIDTH - 1, 0);
-    pbm_line(pbm, 0, HEIGHT - 1, WIDTH - 1, HEIGHT - 1);
+    pbm_line(pbm, 0, 0, EGA_WIDTH - 1, 0);
+    pbm_line(pbm, 0, EGA_HEIGHT - 1, EGA_WIDTH - 1, EGA_HEIGHT - 1);
 
     const char *filename = "output.pbm";
     FILE *f = fopen(filename, "w");

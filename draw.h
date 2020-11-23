@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define EGA_WIDTH 640
+#define EGA_HEIGHT 350
+
 typedef struct pbm_t {
     uint16_t width;
     uint16_t height;
