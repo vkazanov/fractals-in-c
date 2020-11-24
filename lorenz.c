@@ -10,11 +10,43 @@
   TODO: See the link below for further examples:
   https://github.com/skeeto/sort-circle/blob/master/sort.c
 
-  TODO: error in the line drawing algorithm?
-  TODO: Error handling
-  TODO: basic arg parsing
+  TODO: basic arg parsing: pick projection, offsets, scale and the output filename
 */
 
+typedef void project_function_t(double x, double y, double z,
+                                double col_scale, int col_offset,
+                                double row_scale, int row_offset,
+                                int *col, int *row);
+
+void project_xz(double x, double y, double z,
+                double col_scale, int col_offset,
+                double row_scale, int row_offset,
+                int *col, int *row)
+{
+    (void) y;
+    *col = x * col_scale + col_offset;
+    *row = z * row_scale + row_offset;
+}
+
+void project_yz(double x, double y, double z,
+                double col_scale, int col_offset,
+                double row_scale, int row_offset,
+                int *col, int *row)
+{
+    (void) x;
+    *col = y * col_scale + col_offset;
+    *row = z * row_scale + row_offset;
+}
+
+void project_yx(double x, double y, double z,
+                double col_scale, int col_offset,
+                double row_scale, int row_offset,
+                int *col, int *row)
+{
+    (void) z;
+    *col = y * col_scale + col_offset;
+    *row = x * row_scale + row_offset;
+}
 
 int main(int argc, char *argv[])
 {
@@ -23,6 +55,25 @@ int main(int argc, char *argv[])
     /* Drawing planes */
     pbm_t *pbm_yz = pbm_create(EGA_WIDTH, EGA_HEIGHT);
     pbm_t *pbm_yx = pbm_create(EGA_WIDTH, EGA_HEIGHT);
+    pbm_t *pbm_xz = pbm_create(EGA_WIDTH, EGA_HEIGHT);
+
+    /* Configure the XZ plane projection */
+    int col_offset = 320, row_offset = 0;
+    double col_scale = 4, row_scale = 1.5;
+    project_function_t *project = project_xz;
+    pbm_t *target_pbm = pbm_xz;
+
+    /* Configure the YZ plane projection */
+    /* int col_offset = 320, row_offset = 0; */
+    /* double col_scale = 2, row_scale = 1.5; */
+    /* project_function_t *project = project_yz; */
+    /* pbm_t *target_pbm = pbm_yz; */
+
+    /* Configure the YX plane projection */
+    /* int col_offset = 320, row_offset = 175; */
+    /* double col_scale = 2, row_scale = 3; */
+    /* project_function_t *project = project_yx; */
+    /* pbm_t *target_pbm = pbm_yx; */
 
     /* Runge Kutta Integration  */
     double dt = 0.005;
@@ -31,9 +82,16 @@ int main(int argc, char *argv[])
     double x = 0, y = 1, z = 0;
     double xt, yt, zt;
 
-    /* int old_col = y; */
-    /* int old_row = z; */
     x = 0; y = 1; z = 0;
+
+    /* int old_col = y * 2 + 320; */
+    /* int old_row = z * 1.5; */
+    /* int old_col = y * 2 + 320; */
+    /* int old_row = x * 2 + 175; */
+
+    int old_col;
+    int old_row;
+    project(x, y, z, col_scale, col_offset, row_scale, row_offset, &old_col, &old_row);
 
     for (int i = 0; i < 8000; i++) {
 
@@ -76,15 +134,13 @@ int main(int argc, char *argv[])
         y += (d0_y + d1_y + d1_y + d2_y + d3_y) * third;
         z += (d0_z + d1_z + d1_z + d2_z + d3_z) * third;
 
-        /* Project the Lorenz attract onto the YZ plane */
-        int col = y * 2 + 320;
-        int row = z * 1.5;
-        pbm_dot_safe(pbm_yz, col, row);
+        /* Project the Lorenz attractor onto the plane */
+        int col, row;
+        project(x, y, z, col_scale, col_offset, row_scale, row_offset, &col, &row);
+        pbm_line_safe(target_pbm, old_col, old_row, col, row);
 
-        /* Project the Lorenz attract onto the YX plane */
-        col = y * 2 + 320;
-        row = x * 2 + 175;
-        pbm_dot_safe(pbm_yx, col, row);
+        old_col = col;
+        old_row = row;
     }
 
     /* Dump results */
@@ -96,8 +152,13 @@ int main(int argc, char *argv[])
     pbm_write(pbm_yx, f);
     fclose(f);
 
+    f = fopen("lorenz_xz.pbm", "w");
+    pbm_write(pbm_xz, f);
+    fclose(f);
+
     pbm_destroy(pbm_yz);
     pbm_destroy(pbm_yx);
+    pbm_destroy(pbm_xz);
 
     return EXIT_SUCCESS;
 }

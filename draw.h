@@ -33,6 +33,10 @@ void pbm_line(pbm_t *pbm,
               uint32_t x_begin, uint32_t y_begin,
               uint32_t x_end, uint32_t y_end);
 
+void pbm_line_safe(pbm_t *pbm,
+                   int x_begin, int y_begin,
+                   int x_end, int y_end);
+
 /* Portable PixMap (RGB, 3 values per pixel, 0-255 each) */
 
 typedef struct ppm_color_t {

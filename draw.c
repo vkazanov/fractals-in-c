@@ -59,7 +59,7 @@ void pbm_dot(pbm_t *pbm, uint32_t x, uint32_t y)
 
 void pbm_dot_safe(pbm_t *pbm, int x, int y)
 {
-    if (x >= 0 && y >= 0 && x < pbm->width && y < pbm->height)
+    if (x >= 0 || y >= 0 || x < pbm->width || y < pbm->height)
         pbm_dot(pbm, (uint32_t)x, (uint32_t)y);
 }
 
@@ -114,6 +114,19 @@ void pbm_line(pbm_t *pbm,
 
 #undef DIFF
 #undef SIGN
+}
+
+void pbm_line_safe(pbm_t *pbm,
+                   int x_begin, int y_begin,
+                   int x_end, int y_end)
+{
+    if (x_begin < 0 || y_begin < 0 || x_begin >= pbm->width || y_begin >= pbm->height)
+        return;
+
+    if (x_end < 0 || y_end < 0 || x_end >= pbm->width || y_end >= pbm->height)
+        return;
+
+    pbm_line(pbm, (uint32_t)x_begin, (uint32_t)y_begin, (uint32_t)x_end, (uint32_t)y_end);
 }
 
 ppm_t *ppm_create(uint32_t width, uint32_t height)
