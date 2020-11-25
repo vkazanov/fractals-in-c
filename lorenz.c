@@ -3,15 +3,10 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <assert.h>
+#include <unistd.h>
 
 #include "draw.h"
 
-/*
-  TODO: See the link below for further examples:
-  https://github.com/skeeto/sort-circle/blob/master/sort.c
-
-  TODO: basic arg parsing: pick projection, offsets, scale and the output filename
-*/
 
 typedef void project_function_t(double x, double y, double z,
                                 double col_scale, int col_offset,
@@ -50,30 +45,46 @@ void project_yx(double x, double y, double z,
 
 int main(int argc, char *argv[])
 {
-    (void) argc; (void) argv;
-
-    /* Drawing planes */
-    pbm_t *pbm_yz = pbm_create(EGA_WIDTH, EGA_HEIGHT);
-    pbm_t *pbm_yx = pbm_create(EGA_WIDTH, EGA_HEIGHT);
-    pbm_t *pbm_xz = pbm_create(EGA_WIDTH, EGA_HEIGHT);
-
-    /* Configure the XZ plane projection */
-    int col_offset = 320, row_offset = 0;
-    double col_scale = 4, row_scale = 1.5;
+    /* Arguments */
+    char *output_filename = "output.pbm";
+    int col_offset = 0;
+    int row_offset = 0;
+    double scale = 1;
     project_function_t *project = project_xz;
-    pbm_t *target_pbm = pbm_xz;
 
-    /* Configure the YZ plane projection */
-    /* int col_offset = 320, row_offset = 0; */
-    /* double col_scale = 2, row_scale = 1.5; */
-    /* project_function_t *project = project_yz; */
-    /* pbm_t *target_pbm = pbm_yz; */
+    int c;
+    while ((c = getopt(argc, argv, "123c:r:s:o:")) != -1) {
+        char *endptr;
+        puts("read arg");
+        switch (c) {
+        case 'o':
+            output_filename = optarg;
+            break;
+        case '1':
+            project = project_xz;
+            break;
+        case '2':
+            project = project_yz;
+            break;
+        case '3':
+            project = project_yx;
+            break;
+        case 'c':
+            col_offset = strtol(optarg, &endptr, 10);
+            break;
+        case 'r':
+            row_offset = strtol(optarg, &endptr, 10);
+            break;
+        case 's':
+            scale = strtod(optarg, &endptr);
+            break;
+        default:
+            return EXIT_FAILURE;
+        }
+    }
 
-    /* Configure the YX plane projection */
-    /* int col_offset = 320, row_offset = 175; */
-    /* double col_scale = 2, row_scale = 3; */
-    /* project_function_t *project = project_yx; */
-    /* pbm_t *target_pbm = pbm_yx; */
+    /* Drawing plane */
+    pbm_t *pbm = pbm_create(EGA_WIDTH, EGA_HEIGHT);
 
     /* Runge Kutta Integration  */
     double dt = 0.005;
@@ -84,14 +95,9 @@ int main(int argc, char *argv[])
 
     x = 0; y = 1; z = 0;
 
-    /* int old_col = y * 2 + 320; */
-    /* int old_row = z * 1.5; */
-    /* int old_col = y * 2 + 320; */
-    /* int old_row = x * 2 + 175; */
-
     int old_col;
     int old_row;
-    project(x, y, z, col_scale, col_offset, row_scale, row_offset, &old_col, &old_row);
+    project(x, y, z, scale, col_offset, scale, row_offset, &old_col, &old_row);
 
     for (int i = 0; i < 8000; i++) {
 
@@ -136,29 +142,19 @@ int main(int argc, char *argv[])
 
         /* Project the Lorenz attractor onto the plane */
         int col, row;
-        project(x, y, z, col_scale, col_offset, row_scale, row_offset, &col, &row);
-        pbm_line_safe(target_pbm, old_col, old_row, col, row);
+        project(x, y, z, scale, col_offset, scale, row_offset, &col, &row);
+        pbm_line_safe(pbm, old_col, old_row, col, row);
 
         old_col = col;
         old_row = row;
     }
 
     /* Dump results */
-    FILE *f = fopen("lorenz_yz.pbm", "w");
-    pbm_write(pbm_yz, f);
+    FILE *f = fopen(output_filename, "w");
+    pbm_write(pbm, f);
     fclose(f);
 
-    f = fopen("lorenz_yx.pbm", "w");
-    pbm_write(pbm_yx, f);
-    fclose(f);
-
-    f = fopen("lorenz_xz.pbm", "w");
-    pbm_write(pbm_xz, f);
-    fclose(f);
-
-    pbm_destroy(pbm_yz);
-    pbm_destroy(pbm_yx);
-    pbm_destroy(pbm_xz);
+    pbm_destroy(pbm);
 
     return EXIT_SUCCESS;
 }
