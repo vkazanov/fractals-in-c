@@ -55,7 +55,6 @@ int main(int argc, char *argv[])
     int c;
     while ((c = getopt(argc, argv, "123c:r:s:o:")) != -1) {
         char *endptr;
-        puts("read arg");
         switch (c) {
         case 'o':
             output_filename = optarg;
