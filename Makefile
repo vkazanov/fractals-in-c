@@ -1,11 +1,13 @@
 CC = gcc
 CFLAGS = -g -Wall -Wextra
 
-all: lorenz
+all: lorenz bifurcation
 
 lorenz: lorenz.c draw.c
 
+bifurcation: bifurcation.c draw.c
+
 clean:
-	rm -vf lorenz *.pbm
+	rm -vf lorenz bifurcation *.pbm *.ppm
 
 .PHONY: all test

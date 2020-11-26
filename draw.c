@@ -168,6 +168,12 @@ void ppm_write(ppm_t *ppm, FILE *f)
 #undef MAX_COLOR
 }
 
+void ppm_dot_safe(ppm_t *ppm, int x, int y, ppm_color_t color)
+{
+    if (x >= 0 || y >= 0 || x < ppm->width || y < ppm->height)
+        ppm_dot(ppm, (uint32_t)x, (uint32_t)y, color);
+}
+
 void ppm_dot(ppm_t *ppm, uint32_t x, uint32_t y, ppm_color_t color)
 {
     assert(x < ppm->width);

@@ -65,6 +65,8 @@ void ppm_destroy(ppm_t *ppm);
 
 void ppm_write(ppm_t *ppm, FILE *f);
 
+void ppm_dot_safe(ppm_t *ppm, int x, int y, ppm_color_t color);
+
 void ppm_dot(ppm_t *ppm, uint32_t x, uint32_t y, ppm_color_t color);
 
 
