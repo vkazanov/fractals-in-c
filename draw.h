@@ -9,6 +9,7 @@
 #define EGA_HEIGHT 350
 
 /* Portable BitMap (black & white, 0/1 per pixel)  */
+
 typedef struct pbm_t {
     uint16_t width;
     uint16_t height;
@@ -69,5 +70,16 @@ void ppm_dot_safe(ppm_t *ppm, int x, int y, ppm_color_t color);
 
 void ppm_dot(ppm_t *ppm, uint32_t x, uint32_t y, ppm_color_t color);
 
+/* Turtle graphics */
+
+typedef struct turtle_t {
+    float x, y, r, theta;
+} turtle_t;
+
+void turtle_point(turtle_t *turtle, float x1, float y1, float x2, float y2);
+
+void turtle_turn(turtle_t *turtle, float angle);
+
+void turtle_step(turtle_t *turtle);
 
 #endif /* DRAW_H */

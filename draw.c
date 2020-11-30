@@ -1,5 +1,6 @@
 #include "draw.h"
 
+#include <math.h>
 #include <stdbool.h>
 #include <assert.h>
 
@@ -59,7 +60,7 @@ void pbm_dot(pbm_t *pbm, uint32_t x, uint32_t y)
 
 void pbm_dot_safe(pbm_t *pbm, int x, int y)
 {
-    if (x >= 0 || y >= 0 || x < pbm->width || y < pbm->height)
+    if (x >= 0 && y >= 0 && x < pbm->width && y < pbm->height)
         pbm_dot(pbm, (uint32_t)x, (uint32_t)y);
 }
 
@@ -180,4 +181,33 @@ void ppm_dot(ppm_t *ppm, uint32_t x, uint32_t y, ppm_color_t color)
     assert(y < ppm->height);
 
     ppm->buf[XY_TO_BYTE(x, y, ppm->width)] = color;
+}
+
+void turtle_point(turtle_t *turtle, float x1, float y1, float x2, float y2)
+{
+    float theta;
+
+    if (x2 - x1 == 0)
+         if (y2 > y1)
+             theta = 90;
+         else
+             theta = 270;
+     else
+         theta = atan((y2 - y1) / (x2 - x1)) * 57.295779;
+
+     if (x1 > x2)
+         theta += 180;
+
+     turtle->theta = theta;
+ }
+
+void turtle_turn(turtle_t *turtle, float angle)
+{
+    turtle->theta += angle;
+}
+
+void turtle_step(turtle_t *turtle)
+{
+    turtle->x += turtle->r * cos(turtle->theta * 0.017453292);
+    turtle->y += turtle->r * sin(turtle->theta * 0.017453292);
 }
