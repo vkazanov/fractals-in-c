@@ -74,45 +74,29 @@ void generate(point_t beg, point_t end, int level)
         .x = beg.x,
         .y = beg.y,
     };
-    turtle_point(&turtle, beg.x, beg.y, end.x, end.y);
-    turtle_step(&turtle);
-    points[1].x = turtle.x;
-    points[1].y = turtle.y;
+    turtle_point(&turtle, beg, end);
+    points[1] = turtle_step(&turtle);
 
     turtle_turn(&turtle, 90);
-    turtle_step(&turtle);
-    points[2].x = turtle.x;
-    points[2].y = turtle.y;
+    points[2] = turtle_step(&turtle);
 
     turtle_turn(&turtle, -90);
-    turtle_step(&turtle);
-    points[3].x = turtle.x;
-    points[3].y = turtle.y;
+    points[3] = turtle_step(&turtle);
 
     turtle_turn(&turtle, -90);
-    turtle_step(&turtle);
-    points[4].x = turtle.x;
-    points[4].y = turtle.y;
+    points[4] = turtle_step(&turtle);
 
     turtle_turn(&turtle, -90);
-    turtle_step(&turtle);
-    points[5].x = turtle.x;
-    points[5].y = turtle.y;
+    points[5] = turtle_step(&turtle);
 
     turtle_turn(&turtle, 90);
-    turtle_step(&turtle);
-    points[6].x = turtle.x;
-    points[6].y = turtle.y;
+    points[6] = turtle_step(&turtle);
 
     turtle_turn(&turtle, 90);
-    turtle_step(&turtle);
-    points[7].x = turtle.x;
-    points[7].y = turtle.y;
+    points[7] = turtle_step(&turtle);
 
     turtle_turn(&turtle, 90);
-    turtle_step(&turtle);
-    points[8].x = turtle.x;
-    points[8].y = turtle.y;
+    points[8] = turtle_step(&turtle);
 
     /* either go deeper, or draw */
     if (level > 0) {

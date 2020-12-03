@@ -78,22 +78,16 @@ void generate(point_t beg, point_t end, int level)
         .x = beg.x,
         .y = beg.y,
     };
-    turtle_point(&turtle, beg.x, beg.y, end.x, end.y);
+    turtle_point(&turtle, beg, end);
 
     /* find intermediate steps */
-    turtle_step(&turtle);
-    points[1].x = turtle.x;
-    points[1].y = turtle.y;
+    points[1] = turtle_step(&turtle);
 
     turtle_turn(&turtle, 60);
-    turtle_step(&turtle);
-    points[2].x = turtle.x;
-    points[2].y = turtle.y;
-    turtle_turn(&turtle, -120);
+    points[2] = turtle_step(&turtle);
 
-    turtle_step(&turtle);
-    points[3].x = turtle.x;
-    points[3].y = turtle.y;
+    turtle_turn(&turtle, -120);
+    points[3] = turtle_step(&turtle);
 
     /* either go deeper, or draw */
     if (level > 0) {

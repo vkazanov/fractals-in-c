@@ -183,20 +183,20 @@ void ppm_dot(ppm_t *ppm, uint32_t x, uint32_t y, ppm_color_t color)
     ppm->buf[XY_TO_BYTE(x, y, ppm->width)] = color;
 }
 
-void turtle_point(turtle_t *turtle, float x1, float y1, float x2, float y2)
+void turtle_point(turtle_t *turtle, point_t beg, point_t end)
 {
     float theta;
 
-    if (x2 - x1 == 0)
-         if (y2 > y1)
-             theta = 90;
-         else
-             theta = 270;
-     else
-         theta = atan((y2 - y1) / (x2 - x1)) * 57.295779;
+    if (end.x - beg.x == 0)
+        if (end.y > beg.y)
+            theta = 90;
+        else
+            theta = 270;
+    else
+        theta = atan((end.y - beg.y) / (end.x - beg.x)) * 57.295779;
 
-     if (x1 > x2)
-         theta += 180;
+    if (beg.x > end.x)
+        theta += 180;
 
      turtle->theta = theta;
  }
@@ -206,8 +206,17 @@ void turtle_turn(turtle_t *turtle, float angle)
     turtle->theta += angle;
 }
 
-void turtle_step(turtle_t *turtle)
+point_t turtle_pos(turtle_t *turtle)
+{
+    return (point_t) {
+        .x = turtle->x,
+        .y = turtle->y,
+    };
+}
+
+point_t turtle_step(turtle_t *turtle)
 {
     turtle->x += turtle->r * cos(turtle->theta * 0.017453292);
     turtle->y += turtle->r * sin(turtle->theta * 0.017453292);
+    return turtle_pos(turtle);
 }

@@ -83,10 +83,13 @@ typedef struct turtle_t {
     float x, y, r, theta;
 } turtle_t;
 
-void turtle_point(turtle_t *turtle, float x1, float y1, float x2, float y2);
+void turtle_point(turtle_t *turtle, point_t beg, point_t end);
 
 void turtle_turn(turtle_t *turtle, float angle);
 
-void turtle_step(turtle_t *turtle);
+point_t turtle_pos(turtle_t *turtle);
+
+point_t turtle_step(turtle_t *turtle);
+
 
 #endif /* DRAW_H */
