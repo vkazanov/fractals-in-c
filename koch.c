@@ -4,10 +4,10 @@
 
 #include "draw.h"
 
-#define GENERATOR_SIZE 5
+#define WIDTH 640
+#define HEIGHT 480
 
-void generate(float X1, float Y1, float X2, float Y2, int level);
-
+void generate(point_t beg, point_t end, int level);
 
 pbm_t *pbm = NULL;
 
@@ -32,23 +32,24 @@ int main(int argc, char *argv[])
         }
     }
 
-    pbm = pbm_create(640, 480);
+    pbm = pbm_create(WIDTH, HEIGHT);
 
     /* Initiator points */
     const int initiator_size = 3;
-    const int initiator_x1[] = {-150, 0, 150};
-    const int initiator_y1[] = {-75, 185, -75};
-    const int initiator_x2[] = {0, 150, -150};
-    const int initiator_y2[] = {185, -75, -75};
+    const point_t initiator_beg[] = {
+        { .x = WIDTH / 2 - 150, .y = HEIGHT / 2 - 75 },
+        { .x = WIDTH / 2 + 0, .y = HEIGHT / 2 + 185 },
+        { .x = WIDTH / 2 + 150, .y = HEIGHT / 2 - 75},
+    };
+    const point_t initiator_end[] = {
+        { .x = WIDTH / 2 + 0, .y = HEIGHT / 2 + 185},
+        { .x = WIDTH / 2 + 150, .y = HEIGHT / 2 - 75 },
+        { .x = WIDTH / 2 - 150, .y = HEIGHT / 2 - 75},
+    };
 
     /* Kick of calculations with predefined initiator points */
-    for (int i = 0; i < initiator_size; ++i) {
-        generate(
-            initiator_x1[i] + 320, initiator_y1[i] + 240,
-            initiator_x2[i] + 320, initiator_y2[i] + 240,
-            level
-        );
-    }
+    for (int i = 0; i < initiator_size; ++i)
+        generate(initiator_beg[i], initiator_end[i], level);
 
     FILE *f = fopen(output_filename, "w");
     pbm_write(pbm, f);
@@ -59,58 +60,55 @@ int main(int argc, char *argv[])
     return EXIT_SUCCESS;
 }
 
-void generate(float X1, float Y1, float X2, float Y2, int level)
+void generate(point_t beg, point_t end, int level)
 {
-    float Xpoints[GENERATOR_SIZE], Ypoints[GENERATOR_SIZE];
+#define GENERATOR_SIZE 5
+
+    point_t points[GENERATOR_SIZE];
     level--;
 
     /* beginning/end of the line to be replaced */
-    Xpoints[0] = X1;
-    Ypoints[0] = Y1;
-
-    Xpoints[4] = X2;
-    Ypoints[4] = Y2;
+    points[0] = beg;
+    points[4] = end;
 
     /* put and orient the turtle */
     turtle_t turtle = {
-        .r = sqrt((X2 - X1) * (X2 - X1) + (Y2 - Y1) * (Y2 - Y1)) / 3.0,
-        .x = X1,
-        .y = Y1,
+        .r = sqrt((end.x - beg.x) * (end.x - beg.x) +
+                  (end.y - beg.y) * (end.y - beg.y)) / 3.0,
+        .x = beg.x,
+        .y = beg.y,
     };
-    turtle_point(&turtle, X1, Y1, X2, Y2);
+    turtle_point(&turtle, beg.x, beg.y, end.x, end.y);
 
     /* find intermediate steps */
     turtle_step(&turtle);
-    Xpoints[1] = turtle.x;
-    Ypoints[1] = turtle.y;
+    points[1].x = turtle.x;
+    points[1].y = turtle.y;
 
     turtle_turn(&turtle, 60);
     turtle_step(&turtle);
-    Xpoints[2] = turtle.x;
-    Ypoints[2] = turtle.y;
+    points[2].x = turtle.x;
+    points[2].y = turtle.y;
     turtle_turn(&turtle, -120);
 
     turtle_step(&turtle);
-    Xpoints[3] = turtle.x;
-    Ypoints[3] = turtle.y;
+    points[3].x = turtle.x;
+    points[3].y = turtle.y;
 
     /* either go deeper, or draw */
     if (level > 0) {
         for (int i = 0; i < GENERATOR_SIZE - 1; i++) {
-            X1 = Xpoints[i];
-            Y1 = Ypoints[i];
-            X2 = Xpoints[i + 1];
-            Y2 = Ypoints[i + 1];
-
-            generate(X1, Y1, X2, Y2, level);
+            generate(points[i], points[i + 1], level);
         }
     } else {
         for (int i = 0; i < GENERATOR_SIZE - 1; i++){
             pbm_line_safe(
                 pbm,
-                Xpoints[i], Ypoints[i],
-                Xpoints[i + 1], Ypoints[i + 1]
+                points[i].x, points[i].y,
+                points[i + 1].x, points[i + 1].y
             );
         }
     }
+
+#undef GENERATOR_SIZE
 }

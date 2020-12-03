@@ -8,6 +8,13 @@
 #define EGA_WIDTH 640
 #define EGA_HEIGHT 350
 
+/* Utils */
+
+typedef struct {
+    float x;
+    float y;
+} point_t;
+
 /* Portable BitMap (black & white, 0/1 per pixel)  */
 
 typedef struct pbm_t {

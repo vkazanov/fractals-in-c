@@ -7,13 +7,7 @@
 #define WIDTH 640
 #define HEIGHT 480
 
-typedef struct {
-    float x;
-    float y;
-} point_t;
-
 void generate(point_t beg, point_t end, int level);
-
 
 pbm_t *pbm = NULL;
 
@@ -126,9 +120,10 @@ void generate(point_t beg, point_t end, int level)
             generate(points[i], points[i + 1], level);
     } else {
         for (int i = 0; i < GENERATOR_SIZE - 1; i++)
-            pbm_line_safe(pbm,
-                          points[i].x, points[i].y,
-                          points[i + 1].x, points[i + 1].y
+            pbm_line_safe(
+                pbm,
+                points[i].x, points[i].y,
+                points[i + 1].x, points[i + 1].y
             );
     }
 
