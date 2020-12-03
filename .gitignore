@@ -1,6 +1,7 @@
 GPATH
 GRTAGS
 GTAGS
+*.o
 *.ppm
 *.pbm
 lorenz

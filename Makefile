@@ -2,19 +2,15 @@ CC = gcc
 CFLAGS = -g -Wall -Wextra
 LOADLIBES=-lm
 
-all: lorenz bifurcation koch peano hilbert
+EXECUTABLES=lorenz bifurcation koch peano hilbert
 
-lorenz: lorenz.c draw.c
+.PHONY: all
+all: $(EXECUTABLES)
 
-bifurcation: bifurcation.c draw.c
+$(EXECUTABLES): draw.o
 
-koch: koch.c draw.c
+draw.o: draw.h
 
-peano: peano.c draw.c
-
-hilbert: hilbert.c draw.c
-
+.PHONY: clean
 clean:
-	rm -vf hilbert lorenz bifurcation koch peano *.pbm *.ppm
-
-.PHONY: all test
+	rm -vf *.o $(EXECUTABLES) *.pbm *.ppm
