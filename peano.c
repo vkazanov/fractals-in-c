@@ -7,9 +7,10 @@
 #define WIDTH 640
 #define HEIGHT 480
 
-void generate(point_t beg, point_t end, int level);
 
 pbm_t *pbm = NULL;
+
+void generate(point_t beg, point_t end, int level);
 
 int main(int argc, char *argv[])
 {
