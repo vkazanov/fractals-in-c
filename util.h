@@ -1,5 +1,5 @@
-#ifndef DRAW_H
-#define DRAW_H
+#ifndef UTIL_H
+#define UTIL_H
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -92,4 +92,4 @@ point_t turtle_pos(turtle_t *turtle);
 point_t turtle_step(turtle_t *turtle);
 
 
-#endif /* DRAW_H */
+#endif /* UTIL_H */

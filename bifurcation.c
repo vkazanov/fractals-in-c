@@ -1,6 +1,6 @@
 #include <unistd.h>
 
-#include "draw.h"
+#include "util.h"
 
 int main(int argc, char *argv[])
 {

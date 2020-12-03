@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <math.h>
 
-#include "draw.h"
+#include "util.h"
 
 #define WIDTH 640
 #define HEIGHT 480

@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <unistd.h>
 
-#include "draw.h"
+#include "util.h"
 
 
 typedef void project_function_t(double x, double y, double z,

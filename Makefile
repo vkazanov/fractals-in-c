@@ -7,9 +7,9 @@ EXECUTABLES=lorenz bifurcation koch peano hilbert
 .PHONY: all
 all: $(EXECUTABLES)
 
-$(EXECUTABLES): draw.o
+$(EXECUTABLES): util.o
 
-draw.o: draw.h
+util.o: util.h
 
 .PHONY: clean
 clean:
