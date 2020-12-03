@@ -4,3 +4,6 @@ GTAGS
 *.ppm
 *.pbm
 lorenz
+koch
+peano
+bifurcation
