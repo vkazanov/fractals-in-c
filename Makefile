@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -g -Wall -Wextra
 LOADLIBES=-lm
 
-EXECUTABLES=lorenz bifurcation koch peano hilbert sierpinski tree
+EXECUTABLES=lorenz bifurcation koch peano hilbert sierpinski tree mandelbrot
 
 .PHONY: all
 all: $(EXECUTABLES)

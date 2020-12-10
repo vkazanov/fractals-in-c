@@ -54,12 +54,26 @@ typedef struct ppm_color_t {
 } ppm_color_t;
 
 #define PPM_COLOR(red, green, blue) (ppm_color_t) {(red), (green), (blue)}
-#define PPM_RED PPM_COLOR(255, 0, 0)
-#define PPM_GREEN PPM_COLOR(0, 255, 0)
-#define PPM_BLUE PPM_COLOR(0, 0, 255)
-#define PPM_YELLOW PPM_COLOR(255, 255, 0)
-#define PPM_WHITE PPM_COLOR(255, 255, 255)
-#define PPM_BLACK PPM_COLOR(0, 0, 0)
+
+#define PPM_BLACK PPM_COLOR(0x00, 0x00, 0x00)
+#define PPM_BLUE PPM_COLOR(0x00, 0x00, 0xAA)
+#define PPM_GREEN PPM_COLOR(0x00, 0xAA, 0x00)
+#define PPM_CYAN PPM_COLOR(0x00, 0xAA, 0xAA)
+
+#define PPM_RED PPM_COLOR(0xAA, 0x00, 0x00)
+#define PPM_MAGENTA PPM_COLOR(0xAA, 0x00, 0xAA)
+#define PPM_BROWN PPM_COLOR(0xAA, 0x55, 0x00)
+#define PPM_LIGHT_GREY PPM_COLOR(0xAA, 0xAA, 0xAA)
+
+#define PPM_DARK_GREY PPM_COLOR(0x55, 0x55, 0x55)
+#define PPM_BRIGHT_BLUE PPM_COLOR(0x55, 0x55, 0xFF)
+#define PPM_BRIGHT_GREEN PPM_COLOR(0x55, 0xFF, 0x55)
+#define PPM_BRIGHT_CYAN PPM_COLOR(0x55, 0xFF, 0xFF)
+
+#define PPM_BRIGHT_RED PPM_COLOR(0xFF, 0x55, 0x55)
+#define PPM_BRIGHT_MAGENTA PPM_COLOR(0xFF, 0x55, 0xFF)
+#define PPM_YELLOW PPM_COLOR(0xFF, 0xFF, 0x55)
+#define PPM_WHITE PPM_COLOR(0xFF, 0xFF, 0xFF)
 
 typedef struct ppm_t {
     uint16_t width;
