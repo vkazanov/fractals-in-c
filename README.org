@@ -1,0 +1,17 @@
+A few fractal-generating programs from a vintage book ([[https://www.amazon.co.uk/Fractal-Programming-Roger-T-Stevens/dp/1558510370/][Fractal Programming in C]]).
+1989-style C code was completely rewritten, and generates [[https://en.wikipedia.org/wiki/Netpbm#File_formats][Netpbm]] files now.
+
+The book is ok, but there's no particular reason I would recommend it over any other book.
+
+* Compiling and running
+
+Examples should easy to build on any Linux using a recent GCC and GNU Make:
+
+#+begin_src shell-script
+  make
+  # -o for an output file
+  ./mandelbrot -o output.ppm
+  see output.ppm
+#+end_src
+
+Some of the programs accept additional arguments but defaults should be fine too.
