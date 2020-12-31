@@ -20,24 +20,28 @@ Some of the programs accept additional arguments but defaults should be fine too
 
   Mandelbrot set:
 
-  [[file:examples/mandelbrot.pbm]]
+  [[file:examples/mandelbrot.png]]
 
   Peano curve:
 
-  [[file:examples/peano.pbm]]
+  [[file:examples/peano.png]]
 
   Hilbert curve:
 
-  [[file:examples/hilbert.pbm]]
+  [[file:examples/hilbert.png]]
 
   Bifurcation equation:
 
-  [[file:examples/bifurcation.ppm]]
+  [[file:examples/bifurcation.png]]
 
   A simple tree:
 
-  [[file:examples/tree.pbm]]
+  [[file:examples/tree.png]]
 
   Koch snowflake:
 
-  [[file:examples/koch.pbm]]
+  [[file:examples/koch.png]]
+
+  Sierpinsky triangle:
+
+  [[file:examples/sierpinski.png]]
