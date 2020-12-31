@@ -2,8 +2,6 @@ GPATH
 GRTAGS
 GTAGS
 *.o
-*.ppm
-*.pbm
 lorenz
 koch
 peano

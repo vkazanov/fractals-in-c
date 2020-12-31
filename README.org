@@ -15,3 +15,29 @@ Examples should easy to build on any Linux using a recent GCC and GNU Make:
 #+end_src
 
 Some of the programs accept additional arguments but defaults should be fine too.
+
+* A few examples
+
+  Mandelbrot set:
+
+  [[file:examples/mandelbrot.pbm]]
+
+  Peano curve:
+
+  [[file:examples/peano.pbm]]
+
+  Hilbert curve:
+
+  [[file:examples/hilbert.pbm]]
+
+  Bifurcation equation:
+
+  [[file:examples/bifurcation.ppm]]
+
+  A simple tree:
+
+  [[file:examples/tree.pbm]]
+
+  Koch snowflake:
+
+  [[file:examples/koch.pbm]]
